@@ -9,19 +9,13 @@ public class OODJ extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Main panel with CardLayout for screen navigation
+        // Main panel with CardLayout for navigation
         JPanel mainPanel = new JPanel(new CardLayout());
         add(mainPanel, BorderLayout.CENTER);
 
-        // Adding screens
+        // Adding screens to the main panel
         mainPanel.add(new LoginScreen(mainPanel), "LoginScreen");
-        mainPanel.add(new MainMenu(mainPanel), "MainMenu");
-        mainPanel.add(new ItemEntryScreen(), "ItemEntryScreen");
-        mainPanel.add(new SupplierEntryScreen(), "SupplierEntryScreen");
-        mainPanel.add(new SalesEntryScreen(), "SalesEntryScreen");
-        mainPanel.add(new RequisitionScreen(), "RequisitionScreen");
-        mainPanel.add(new PurchaseOrderScreen(), "PurchaseOrderScreen");
-        mainPanel.add(new UserRegistrationScreen(), "UserRegistrationScreen");
+        mainPanel.add(new UserRegistrationScreen(mainPanel), "UserRegistrationScreen");
 
         // Show login screen initially
         CardLayout cl = (CardLayout) mainPanel.getLayout();

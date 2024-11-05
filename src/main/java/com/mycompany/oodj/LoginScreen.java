@@ -1,9 +1,9 @@
 package com.mycompany.oodj;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class LoginScreen extends JPanel {
     public LoginScreen(JPanel mainPanel) {
@@ -39,11 +39,47 @@ public class LoginScreen extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
+                List<String[]> users = FileHandler.loadUsers();
 
-                // Dummy validation
-                if (username.equals("admin") && password.equals("admin")) {
+                boolean authenticated = false;
+                String role = "";
+
+                // Check credentials
+                for (String[] user : users) {
+                    if (user[1].equals(username) && user[2].equals(password)) {
+                        authenticated = true;
+                        role = user[3];
+                        break;
+                    }
+                }
+
+                if (authenticated) {
                     CardLayout cl = (CardLayout) mainPanel.getLayout();
-                    cl.show(mainPanel, "MainMenu");
+                    switch (role) {
+                        case "admin":
+                            mainPanel.add(new AdminMenu(mainPanel), "AdminMenu");
+                            cl.show(mainPanel, "AdminMenu");
+                            break;
+                        case "sales":
+                            mainPanel.add(new SalesManagerMenu(mainPanel), "SalesManagerMenu");
+                            cl.show(mainPanel, "SalesManagerMenu");
+                            break;
+                        case "purchase":
+                            mainPanel.add(new PurchaseManagerMenu(mainPanel), "PurchaseManagerMenu");
+                            cl.show(mainPanel, "PurchaseManagerMenu");
+                            break;
+                        case "inventory":
+                            mainPanel.add(new InventoryManagerMenu(mainPanel), "InventoryManagerMenu");
+                            cl.show(mainPanel, "InventoryManagerMenu");
+                            break;
+                        case "finance":
+                            mainPanel.add(new FinanceManagerMenu(mainPanel), "FinanceManagerMenu");
+                            cl.show(mainPanel, "FinanceManagerMenu");
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(null, "Unknown role!");
+                            break;
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid credentials!");
                 }
